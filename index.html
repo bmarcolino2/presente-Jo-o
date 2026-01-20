@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surpresa 💜</title>
+
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #5f2c82, #8e44ad, #c77dff);
+  background-size: 400% 400%;
+  animation: bg 12s ease infinite;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+@keyframes bg {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+.container {
+  width: 95%;
+  max-width: 420px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 25px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+h1, h2 {
+  color: #6a0572;
+}
+
+button {
+  padding: 14px 22px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #9b5de5, #f15bb5);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+#noBtn {
+  position: absolute;
+}
+
+img {
+  width: 100%;
+  border-radius: 20px;
+  margin: 15px 0;
+}
+
+.game-area {
+  position: relative;
+  height: 300px;
+  background: #eee;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.footer-btn {
+  margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- TELA 1 -->
+<div id="screen1" class="screen active">
+  <h1>Feliz aniversário 💜</h1>
+  <h2>Vamos comemorar?</h2>
+
+  <button onclick="nextScreen(2)">Bora Ray ✨</button>
+  <button id="noBtn">não, sou chato</button>
+</div>
+
+<!-- TELA 2 -->
+<div id="screen2" class="screen">
+  <h2>Uma música pra esse momento 🎶</h2>
+
+  <div style="position:relative;padding-top:56.25%;">
+    <iframe
+      src="https://www.youtube.com/embed/hOrcg8qTlH4"
+      style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:15px;"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <img src="parabéns.jpg" alt="Imagem aniversário">
+
+  <div class="footer-btn">
+    <button onclick="nextScreen(3)">Próxima página 🎁</button>
+  </div>
+</div>
+
+<!-- TELA 3 -->
+<div id="screen3" class="screen">
+  <h2>Selecione seu presente 🎁</h2>
+
+  <button onclick="sendWhats('Uma skin a sua escolha')">🎮 Uma skin a sua escolha</button>
+  <button onclick="sendWhats('Um abraço e uma conchinha')">💜 Um abraço e uma conchinha</button>
+  <button onclick="sendWhats('Vale Adeus seca 🔥')">🔥 Vale Adeus seca</button>
+
+  <div class="footer-btn">
+    <button onclick="nextScreen(4)">Vamos jogar 🎮</button>
+  </div>
+</div>
+
+<!-- TELA 4 - MÁQUINA DE CORAÇÕES -->
+<div id="screen4" class="screen">
+  <h2>Máquina de Corações 💖</h2>
+
+  <div class="game-area" onclick="catchHeart(event)">
+    <div class="heart" style="top:40%;left:45%;">🤍</div>
+    <div class="heart" style="top:20%;left:20%;">🤍</div>
+    <div class="heart" style="top:60%;left:70%;">🤍</div>
+  </div>
+
+  <div class="footer-btn">
+    <button onclick="nextScreen(5)">Próximo jogo 🎲</button>
+  </div>
+</div>
+
+<!-- TELA 5 - ROLETA -->
+<div id="screen5" class="screen">
+  <h2>Roleta do Destino 🎡</h2>
+
+  <img src="https://i.imgur.com/3ZQ3Z6A.png" alt="Roleta" onclick="spinRoulette()">
+
+  <p id="rouletteResult"></p>
+
+  <div class="footer-btn">
+    <button onclick="nextScreen(6)">Último jogo 💥</button>
+  </div>
+</div>
+
+<!-- TELA 6 - CLIQUE NOS CORAÇÕES -->
+<div id="screen6" class="screen">
+  <h2>Clique nos corações 🤍</h2>
+
+  <div class="game-area" id="heartGame"></div>
+
+  <p id="score">Pontos: 0</p>
+</div>
+
+</div>
+
+<script>
+function nextScreen(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen' + n).classList.add('active');
+}
+
+const noBtn = document.getElementById('noBtn');
+noBtn.addEventListener('mouseenter', () => {
+  noBtn.style.top = Math.random() * 70 + '%';
+  noBtn.style.left = Math.random() * 70 + '%';
+});
+
+function sendWhats(msg) {
+  window.open(
+    `https://wa.me/5548988478865?text=${encodeURIComponent(
+      'Escolha de presente: ' + msg
+    )}`,
+    '_blank'
+  );
+}
+
+function catchHeart(e) {
+  if (e.target.classList.contains('heart')) {
+    alert('Você pegou um coração 💜');
+    e.target.remove();
+  }
+}
+
+function spinRoulette() {
+  const options = ['Beijo 💋', 'Abraço 🫂', 'Pizza 🍕', 'Filme 🎬'];
+  document.getElementById('rouletteResult').innerText =
+    options[Math.floor(Math.random() * options.length)];
+}
+
+let score = 0;
+const heartGame = document.getElementById('heartGame');
+
+setInterval(() => {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.innerText = '🤍';
+  heart.style.top = Math.random() * 80 + '%';
+  heart.style.left = Math.random() * 80 + '%';
+  heart.onclick = () => {
+    score++;
+    document.getElementById('score').innerText = 'Pontos: ' + score;
+    heart.remove();
+  };
+  heartGame.appendChild(heart);
+
+  setTimeout(() => heart.remove(), 2000);
+}, 800);
+</script>
+
+</body>
+</html>
