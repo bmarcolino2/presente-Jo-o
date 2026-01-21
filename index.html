@@ -2,235 +2,342 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<title>Nosso Amor 💜</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Surpresa 💜</title>
 
 <style>
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #5f2c82, #8e44ad, #c77dff);
-  background-size: 400% 400%;
-  animation: bg 12s ease infinite;
-  font-family: Arial, sans-serif;
-  overflow-x: hidden;
-  overflow-y: auto;
-  display: flex;
-  justify-content: center;
-  padding: 20px 0;
+:root{
+  --bg1:#4b0082;
+  --bg2:#7209b7;
+  --text:#fff;
+  --card:rgba(255,255,255,.15);
 }
 
-@keyframes bg {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
+body.light{
+  --bg1:#fff2cc;
+  --bg2:#ffe8a3;
+  --text:#4b0082;
+  --card:rgba(0,0,0,.08);
 }
 
-.container {
-  width: 95%;
-  max-width: 420px;
-  background: rgba(255,255,255,0.92);
-  border-radius: 25px;
-  padding: 25px;
-  text-align: center;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+
+body{
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--text);
+  min-height:100vh;
+  overflow:hidden;
+  transition:.4s;
 }
 
-.screen {
-  display: none;
+/* BARRA DO AMOR */
+#loveBar{
+  position:fixed;
+  top:0;left:0;
+  height:6px;
+  width:0%;
+  background:linear-gradient(90deg,#ff5d8f,#c77dff);
+  transition:.3s;
+  z-index:9999;
 }
 
-.screen.active {
-  display: block;
+/* CONTROLES */
+#topControls{
+  position:fixed;
+  top:10px;
+  right:10px;
+  display:flex;
+  gap:10px;
+  z-index:9999;
 }
 
-h1, h2 {
-  color: #6a0572;
+#langSelect img{
+  width:30px;
+  height:20px;
+  cursor:pointer;
+  border-radius:4px;
+  box-shadow:0 3px 6px rgba(0,0,0,.4);
 }
 
-button {
-  padding: 14px 22px;
-  border: none;
-  border-radius: 30px;
-  background: linear-gradient(135deg, #9b5de5, #f15bb5);
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  margin: 10px;
+/* PÁGINAS */
+.page{
+  display:none;
+  min-height:100vh;
+  padding:40px 20px;
+  text-align:center;
+  animation:fade .5s ease;
+}
+.page.active{display:block}
+
+@keyframes fade{
+  from{opacity:0;transform:scale(.95)}
+  to{opacity:1;transform:scale(1)}
 }
 
-button:hover {
-  transform: scale(1.05);
+/* BOTÕES */
+button{
+  padding:14px 26px;
+  border:0;
+  border-radius:30px;
+  font-size:15px;
+  cursor:pointer;
+  margin:10px;
+  background:linear-gradient(145deg,#c77dff,#7209b7);
+  color:#fff;
+  transition:.25s;
+  box-shadow:0 6px 0 #3a0ca3;
+}
+button:hover{transform:translateY(-4px)}
+button:active{transform:translateY(2px)}
+
+/* CORAÇÕES */
+.heart{
+  position:absolute;
+  pointer-events:none;
+  animation:float 2s ease forwards;
+}
+@keyframes float{
+  to{opacity:0;transform:translateY(-120px)}
 }
 
-#noBtn {
-  position: absolute;
+/* MÁQUINA */
+.machine{
+  position:relative;
+  width:260px;
+  height:320px;
+  margin:30px auto;
+  border-radius:20px;
+  background:var(--card);
+  border:3px solid var(--text);
+  overflow:hidden;
+}
+.bear{
+  position:absolute;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:60px;
+  transition:.6s;
+}
+.garra-box{
+  position:absolute;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  cursor:pointer;
+}
+.corda{
+  width:4px;
+  height:60px;
+  background:var(--text);
+  margin:auto;
+  transition:.8s;
+}
+.garra{
+  font-size:42px;
+  transition:.8s;
+}
+.machine.descendo .corda{height:180px}
+.machine.descendo .garra{transform:translateY(120px)}
+.machine.pegou .bear{transform:translate(-50%,-120px) scale(.8)}
+
+/* ROLETA */
+.roleta{
+  font-size:100px;
+  cursor:pointer;
+  transition:transform 4s cubic-bezier(.17,.67,.2,1);
 }
 
-img {
-  width: 100%;
-  border-radius: 20px;
-  margin: 15px 0;
+.result{
+  margin-top:20px;
+  padding:14px;
+  border-radius:20px;
+  background:var(--card);
 }
 
-.game-area {
-  position: relative;
-  height: 300px;
-  background: #eee;
-  border-radius: 20px;
-  overflow: hidden;
+/* MENSAGEM FINAL */
+#finalLove{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.6s;
+  z-index:10000;
 }
-
-.heart {
-  position: absolute;
-  font-size: 30px;
-  cursor: pointer;
+#finalLove.show{
+  opacity:1;
+  pointer-events:auto;
 }
-
-.footer-btn {
-  margin-top: 20px;
+.finalBox{
+  background:linear-gradient(135deg,#c77dff,#7209b7);
+  padding:40px;
+  border-radius:25px;
+  font-size:24px;
 }
 </style>
 </head>
 
-<body>
+<body onclick="spawnHeart(event)">
+<div id="loveBar"></div>
 
-<div class="container">
-
-<!-- TELA 1 -->
-<div id="screen1" class="screen active">
-  <h1>Feliz aniversário 💜</h1>
-  <h2>Vamos comemorar?</h2>
-
-  <button onclick="nextScreen(2)">Bora Ray ✨</button>
-  <button id="noBtn">não, sou chato</button>
-</div>
-
-<!-- TELA 2 -->
-<div id="screen2" class="screen">
-  <h2>Uma música pra esse momento 🎶</h2>
-
-  <div style="position:relative;padding-top:56.25%;">
-    <iframe
-      src="https://www.youtube.com/embed/hOrcg8qTlH4"
-      style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:15px;"
-      frameborder="0"
-      allow="autoplay; encrypted-media"
-      allowfullscreen>
-    </iframe>
-  </div>
-
-  <img src="parabéns.jpg" alt="Imagem aniversário">
-
-  <div class="footer-btn">
-    <button onclick="nextScreen(3)">Próxima página 🎁</button>
+<div id="topControls">
+  <button onclick="toggleTheme()">🌗</button>
+  <div id="langSelect">
+    <img src="https://flagcdn.com/w40/br.png" onclick="setLang('pt')">
+    <img src="https://flagcdn.com/w40/us.png" onclick="setLang('en')">
+    <img src="https://flagcdn.com/w40/es.png" onclick="setLang('es')">
   </div>
 </div>
 
-<!-- TELA 3 -->
-<div id="screen3" class="screen">
-  <h2>Selecione seu presente 🎁</h2>
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2023/03/28/audio_2cfa8898cb.mp3">
+</audio>
 
-  <button onclick="sendWhats('Uma skin a sua escolha')">🎮 Uma skin a sua escolha</button>
-  <button onclick="sendWhats('Um abraço e uma conchinha')">💜 Um abraço e uma conchinha</button>
-  <button onclick="sendWhats('Vale Adeus seca 🔥')">🔥 Vale Adeus seca</button>
-
-  <div class="footer-btn">
-    <button onclick="nextScreen(4)">Vamos jogar 🎮</button>
-  </div>
+<div class="page active" id="page1">
+  <h1 id="t1">💜 Nosso Amor 💜</h1>
+  <p id="t2">Cada clique enche o amor</p>
+  <button onclick="start()" id="t3">Bora meu amor</button>
 </div>
 
-<!-- TELA 4 - MÁQUINA DE CORAÇÕES -->
-<div id="screen4" class="screen">
-  <h2>Máquina de Corações 💖</h2>
+<div class="page" id="page2">
+  <h2 id="t4">Máquina de Ursinhos 🧸</h2>
+  <p>Tentativas: <span id="tentG">0</span></p>
 
-  <div class="game-area" onclick="catchHeart(event)">
-    <div class="heart" style="top:40%;left:45%;">🤍</div>
-    <div class="heart" style="top:20%;left:20%;">🤍</div>
-    <div class="heart" style="top:60%;left:70%;">🤍</div>
+  <div class="machine" id="machine">
+    <div class="bear">🧸</div>
+    <div class="garra-box" onclick="acionarGarra()">
+      <div class="corda"></div>
+      <div class="garra">🪝</div>
+    </div>
   </div>
 
-  <div class="footer-btn">
-    <button onclick="nextScreen(5)">Próximo jogo 🎲</button>
+  <div class="result" id="resGarra">Clique na garra</div>
+
+  <button onclick="acionarGarra()">🔁 Tentar novamente</button>
+  <button onclick="goTo(3)">Ir para roleta</button>
+</div>
+
+<div class="page" id="page3">
+  <h2 id="t5">Roleta do Amor 🎡</h2>
+  <p>Tentativas: <span id="tentR">0</span></p>
+
+  <div class="roleta" onclick="girar()">🎡</div>
+  <div class="result" id="resRoleta">Clique na roleta</div>
+
+  <button onclick="girar()">🔁 Tentar novamente</button>
+  <button onclick="goTo(2)">🔙 Voltar</button>
+  <button onclick="enviarWhats()">📲 Enviar WhatsApp</button>
+</div>
+
+<div id="finalLove">
+  <div class="finalBox">
+    💜<br><br>
+    eu te amo meu amor,<br>
+    obrigada por esses 3 anos,<br>
+    espero que tenhamos muitos mais &lt;3<br><br>
+    <button onclick="closeFinal()">Voltar aos jogos</button>
   </div>
-</div>
-
-<!-- TELA 5 - ROLETA -->
-<div id="screen5" class="screen">
-  <h2>Roleta do Destino 🎡</h2>
-
-  <img src="https://i.imgur.com/3ZQ3Z6A.png" alt="Roleta" onclick="spinRoulette()">
-
-  <p id="rouletteResult"></p>
-
-  <div class="footer-btn">
-    <button onclick="nextScreen(6)">Último jogo 💥</button>
-  </div>
-</div>
-
-<!-- TELA 6 - CLIQUE NOS CORAÇÕES -->
-<div id="screen6" class="screen">
-  <h2>Clique nos corações 🤍</h2>
-
-  <div class="game-area" id="heartGame"></div>
-
-  <p id="score">Pontos: 0</p>
-</div>
-
 </div>
 
 <script>
-function nextScreen(n) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen' + n).classList.add('active');
+let love=0, premioAtual="", tentG=0, tentR=0
+
+function toggleTheme(){
+  document.body.classList.toggle("light")
 }
 
-const noBtn = document.getElementById('noBtn');
-noBtn.addEventListener('mouseenter', () => {
-  noBtn.style.top = Math.random() * 70 + '%';
-  noBtn.style.left = Math.random() * 70 + '%';
-});
-
-function sendWhats(msg) {
-  window.open(
-    `https://wa.me/5548988478865?text=${encodeURIComponent(
-      'Escolha de presente: ' + msg
-    )}`,
-    '_blank'
-  );
-}
-
-function catchHeart(e) {
-  if (e.target.classList.contains('heart')) {
-    alert('Você pegou um coração 💜');
-    e.target.remove();
+function addLove(v){
+  if(love>=100) return
+  love=Math.min(100,love+v)
+  document.getElementById("loveBar").style.width=love+"%"
+  if(love>=100){
+    document.getElementById("finalLove").classList.add("show")
   }
 }
 
-function spinRoulette() {
-  const options = ['Beijo 💋', 'Abraço 🫂', 'Pizza 🍕', 'Filme 🎬'];
-  document.getElementById('rouletteResult').innerText =
-    options[Math.floor(Math.random() * options.length)];
+function spawnHeart(e){
+  const h=document.createElement("div")
+  h.className="heart"
+  h.textContent="💜"
+  h.style.left=e.clientX+"px"
+  h.style.top=e.clientY+"px"
+  document.body.appendChild(h)
+  setTimeout(()=>h.remove(),2000)
+  addLove(1)
 }
 
-let score = 0;
-const heartGame = document.getElementById('heartGame');
+function start(){
+  document.getElementById("music").play()
+  goTo(2)
+}
 
-setInterval(() => {
-  const heart = document.createElement('div');
-  heart.className = 'heart';
-  heart.innerText = '🤍';
-  heart.style.top = Math.random() * 80 + '%';
-  heart.style.left = Math.random() * 80 + '%';
-  heart.onclick = () => {
-    score++;
-    document.getElementById('score').innerText = 'Pontos: ' + score;
-    heart.remove();
-  };
-  heartGame.appendChild(heart);
+function goTo(n){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
+  document.getElementById("page"+n).classList.add("active")
+}
 
-  setTimeout(() => heart.remove(), 2000);
-}, 800);
+const premiosG=["💋 Beijos","🤍 Abraço","🔥 Surpresa","💜 Amor infinito"]
+let usando=false
+
+function acionarGarra(){
+  if(usando) return
+  usando=true
+  tentG++
+  document.getElementById("tentG").textContent=tentG
+  premioAtual=premiosG[Math.floor(Math.random()*premiosG.length)]
+  const m=document.getElementById("machine")
+  m.classList.add("descendo")
+  setTimeout(()=>m.classList.add("pegou"),1200)
+  setTimeout(()=>{
+    m.classList.remove("descendo","pegou")
+    document.getElementById("resGarra").innerHTML="🎁 "+premioAtual
+    usando=false
+    addLove(10)
+  },2800)
+}
+
+let ang=0
+const premiosR=["🍿 Filme","🍷 Jantar","💆 Massagem","💌 Surpresa"]
+
+function girar(){
+  tentR++
+  document.getElementById("tentR").textContent=tentR
+  premioAtual=premiosR[Math.floor(Math.random()*premiosR.length)]
+  ang+=1440+Math.random()*360
+  document.querySelector(".roleta").style.transform=`rotate(${ang}deg)`
+  setTimeout(()=>{
+    document.getElementById("resRoleta").innerHTML="🎁 "+premioAtual
+    addLove(10)
+  },4000)
+}
+
+function enviarWhats(){
+  if(!premioAtual){alert("Nenhum prêmio ainda 💜");return}
+  window.open("https://wa.me/?text="+encodeURIComponent("Meu prêmio foi: "+premioAtual+" 💜"),"_blank")
+}
+
+function closeFinal(){
+  document.getElementById("finalLove").classList.remove("show")
+  goTo(2)
+}
+
+function setLang(l){
+  const t={
+    pt:["💜 Nosso Amor 💜","Cada clique enche o amor","Bora meu amor","Máquina de Ursinhos 🧸","Roleta do Amor 🎡"],
+    en:["💜 Our Love 💜","Each click fills the love","Let’s go my love","Claw Machine 🧸","Love Wheel 🎡"],
+    es:["💜 Nuestro Amor 💜","Cada clic llena el amor","Vamos mi amor","Máquina de Ositos 🧸","Ruleta del Amor 🎡"]
+  }
+  document.getElementById("t1").innerText=t[l][0]
+  document.getElementById("t2").innerText=t[l][1]
+  document.getElementById("t3").innerText=t[l][2]
+  document.getElementById("t4").innerText=t[l][3]
+  document.getElementById("t5").innerText=t[l][4]
+}
 </script>
 
 </body>
